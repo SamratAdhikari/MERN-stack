@@ -119,3 +119,5 @@ console.log(checkPolarity(-12));
 // ? Difference between arrow function and normal function
 // 1. function func is read by the interpreter first so that the function call can be done before declaring the func
 // this feature of function is called hoisting
+
+function func(...args) {}

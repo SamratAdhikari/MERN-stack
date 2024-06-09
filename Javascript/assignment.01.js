@@ -4,15 +4,11 @@
 const num = 12;
 console.log(num % 2 === 0 ? "Even" : "Odd");
 
-
-
 // ? 2. Check if input variable is a number or not
 const val = "some string";
 console.log(
   typeof num === "number" ? `${num} is a number` : `${num} is not a number`
 );
-
-
 
 // ? 3.Find the largest of two numbers.
 let num1 = 12,
@@ -25,14 +21,12 @@ num2 = 566;
 let num3 = 75;
 
 console.log(
-  num1 > num2 && num1 > num2
+  num1 > num2 && num1 > num3
     ? "num1 is the largest"
     : num2 > num3
     ? "num2 is the largest"
     : "num3 is the largest"
 );
-
-
 
 // ? 5.Perform arithmetic operation based on the option provided. Set two variables with numbers. Create another variable called “option” which can be add/subtract/multiply/divide/power. Based upon the value of the option. Perform appropriate operation.
 // e.g. if option is “add”, perform num1+num2
@@ -61,8 +55,6 @@ switch (option) {
   default:
     console.log("Invalid operator");
 }
-
-
 
 // ? 6.Find grades for student marks.
 // If the mark is greater than or equal to 90, the grade is “A plus”.
