@@ -1,58 +1,48 @@
-// ? Why do we use objects in javascript?
+// ! Object Destructor
 
-// They provide Key-Value pair.
-let obj = { key: "value" };
-
-// They provide Encapsulation & Abstraction.
-obj = {};
-Object.defineProperty(obj, "name", {
-  value: "Samrat",
-  enumerable: true, // show data
-  writable: true, // changable
-  configurable: true, // deletable
-});
-console.log(obj);
-
-// They allow dynamic data management.
-// i.e. We can add, edit, update and delete property easily.
-const laptopDetails = {
-  name: "Yoga 6",
-  brand: "Lenovo",
-  ram: 8,
-  ssd: 500,
-};
-let key = "ssd";
-console.log(laptopDetails[key]);
-
-// They allow better organization of the code.
-
-// ? Create an object named myHouseDetails and add following properties
-/*
-a. numberOfRooms
-b. numberOfMembers
-c. colorOfHouse
-d. builtYear
-e. numberOfStorey
-*/
-
-myHouseDetails = {
-  numberOfRooms: 9,
-  numberOfMembers: 10,
-  colorOfHouse: "green",
-  builtYear: 2011,
-  numberOfStorey: 3,
+// ? Basic Destructor
+const bookDetails = {
+  name: "The Meditations",
+  author: "Marcus Aurelius",
+  publishedDate: "175/07/14",
+  numberOfPages: 192,
+  coverPage: null,
+  price: undefined,
 };
 
-// a. Delete numberOfMembers property.
-// delete myHouseDetails.numberOfMembers;
+const { name, author } = bookDetails;
+console.log(author);
 
-// b. Update numberOfRooms by new value.
-myHouseDetails.numberOfRooms = 9;
+// ? Renaming the destructed key
+const obj1 = {
+  name: "Cup",
+  price: 7,
+};
 
-// c. Add a new property called estimatedPriceOfHouse.
-myHouseDetails.estimatedPriceOfHouse = "2 crores";
+const obj2 = {
+  name: "Mouse",
+  price: 15,
+};
 
-// d. Print out the objects.
-console.log(
-  `I have a ${myHouseDetails.colorOfHouse} coloured house with ${myHouseDetails.numberOfRooms} rooms where ${myHouseDetails.numberOfMembers} people are living. The house is ${myHouseDetails.numberOfStorey} storey and was built in ${myHouseDetails.builtYear} with an estimated budget of ${myHouseDetails.estimatedPriceOfHouse}.`
-);
+const { price } = obj1;
+console.log(price);
+
+const { price: priceOfObj2 } = obj2;
+console.log(priceOfObj2);
+
+// ? Nested Destructor
+let student = {
+  name: "Samrat",
+  address: {
+    permanent: "Pokhara",
+    temporary: "Lalitpur",
+  },
+  isGraduated: true,
+};
+
+const {
+  name: studentName,
+  isGraduated,
+  address: { permanent },
+} = student;
+console.log(studentName, permanent);
