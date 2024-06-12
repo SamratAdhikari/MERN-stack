@@ -8,12 +8,12 @@
 // original array length === returned array length
 let studentList = ["Samrat", "Ubermensch", "MrYeti", "King Arthur"];
 
-let newStudentList = studentList.map((item, index, array) => {
+let newStudentList = studentList.map((item, index, self) => {
   return "a";
 });
 console.log(newStudentList);
 
-newStudentList = studentList.map((item, index, array) => {
+newStudentList = studentList.map((item, index, self) => {
   let uppercaseName = item.toUpperCase();
   return uppercaseName;
 });
@@ -43,7 +43,7 @@ const productList = [
   },
 ];
 
-const newProductList = productList.map((item) => {
+let newProductList = productList.map((item) => {
   const newPrice = item.price + item.price * 0.1;
   return {
     ...item,
@@ -59,14 +59,73 @@ console.log(newProductList);
 // mostly, original array length !== returned array length
 // doesnt change value, just selects em
 
-const numList = [1, 10, 33, -6, -99, 97, -100];
-const newNumList = numList.filter((item, index, array) => {
-  return item > 0;
-});
+// get positive numbers from a list
+let numList = [1, 10, 33, -6, -99, 97, -100];
+let newNumList = numList.filter((item, index, self) => item > 0);
 console.log(newNumList);
 
+// find all items whose price is less than 10
+newProductList = productList.filter((item) => item.price < 10);
+console.log(newProductList);
+
 // ? find
+// gets first item in array which satisfies the condition
+// if none of the items satisfy the condition, it returns undefined
+// find is better optimized than filter usually
+
+numList = [-15, 25, 10, 55, -95, 63, 75];
+let value = numList.find((item, index, self) => {
+  return item > 20;
+});
+console.log(value);
+
+// find user whose email is 'sam@gmail.com'
+studentList = [
+  {
+    id: 1,
+    name: "Samrat",
+    email: "sam@gmail.com",
+  },
+  {
+    id: 1,
+    name: "Ubermensch",
+    email: "uber@gmail.com",
+  },
+  {
+    id: 1,
+    name: "MrYeti",
+    email: "yeti@gmail.com",
+  },
+  {
+    id: 1,
+    name: "King Arthur",
+    email: "arthur@gmail.com",
+  },
+];
+value = studentList.find((item) => item.email === "sam@gmail.com");
+console.log(value);
 
 // ? findIndex
+// return index of the first item that satisfies the condition
+value = studentList.findIndex((item) => item.email === "sam@gmail.com");
+console.log(value);
 
 // ? reduce
+// returns a processed value
+// uses extra parameter, accumulator.
+// no need to initialzie the accumulator
+
+// get product of this list
+numList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+value = numList.reduce((accumulator, item, index, self) => accumulator * item);
+console.log(value);
+
+// ! forEach
+// just a sinmple loop
+// doesnt return anything
+numList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let sum = 0;
+numList.forEach((item, index, self) => {
+  sum = sum + item;
+});
+console.log(sum);
