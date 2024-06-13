@@ -117,11 +117,14 @@ console.log(value);
 
 // get product of this list
 numList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-value = numList.reduce((accumulator, item, index, self) => accumulator * item);
+value = numList.reduce(
+  (accumulator, item, index, self) => accumulator * item,
+  1
+);
 console.log(value);
 
 // ! forEach
-// just a sinmple loop
+// just a simple loop
 // doesnt return anything
 numList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 let sum = 0;
