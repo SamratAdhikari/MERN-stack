@@ -97,10 +97,22 @@ console.log(adder(10)(5));
 // node -> single threaded
 // none-blocking -> doesnt block code execution
 
+// example 1
 // setTimeout is also a async func
 console.log("Hi");
 setTimeout(() => {
   console.log("Timeout");
-}, 2000);
+}, 0); //2000
 
 console.log("Hello");
+
+// example 2
+console.log("Nepal");
+setTimeout(() => {
+  console.log("Timeout1");
+}, 4000);
+
+setTimeout(() => {
+  console.log("Timeout2");
+}, 0);
+console.log("USA");
