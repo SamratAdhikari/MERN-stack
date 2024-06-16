@@ -36,10 +36,14 @@ sayHi(0);
 // failure
 
 // ? Promise resolve methods:
-// call back func
-// .then .catch
+// * call back func
+// * .then .catch
 
-// async ... await (relevant today)
+// * async ... await (relevant today)
+// await in front of task that takes time
+// await should be wrapped by a async func
+// for error handling, try catch is used
+
 const promise = new Promise((resolve, reject) => {
   setTimeout(() => {
     let randomNum = Math.random();
