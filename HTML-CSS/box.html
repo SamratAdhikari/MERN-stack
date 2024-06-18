@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Box</title>
+
+    <style>
+      .main {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: row; /*default: row*/
+        justify-content: center; /*main axis ma kaam garxa*/
+        align-items: center; /*secondary axis ma kaam garxa*/
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+      #red-box {
+        border-radius: 50%;
+        height: 200px;
+        width: 200px;
+        background-color: red;
+      }
+      #green-box {
+        border-radius: 50%;
+        height: 200px;
+        width: 200px;
+        background-color: green;
+      }
+      #yellow-box {
+        border-radius: 50%;
+        height: 200px;
+        width: 200px;
+        background-color: yellow;
+      }
+
+      #black-box {
+        border-radius: 50%;
+        height: 200px;
+        width: 200px;
+        background-color: black;
+      }
+      #teal-box {
+        height: 200px;
+        width: 200px;
+        background-color: teal;
+      }
+      #orange-box {
+        height: 200px;
+        width: 200px;
+        background-color: orange;
+      }
+      #purple-box {
+        height: 200px;
+        width: 200px;
+        background-color: purple;
+      }
+      #blue-box {
+        height: 200px;
+        width: 200px;
+        background-color: blue;
+      }
+      #pink-box {
+        height: 200px;
+        width: 200px;
+        background-color: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <main-container class="main">
+      <div id="red-box"></div>
+      <div id="green-box"></div>
+      <div id="yellow-box"></div>
+      <div id="black-box"></div>
+      <div id="teal-box"></div>
+      <div id="pink-box"></div>
+      <div id="purple-box"></div>
+      <div id="orange-box"></div>
+      <div id="blue-box"></div>
+    </main-container>
+  </body>
+</html>
