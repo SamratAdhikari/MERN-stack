@@ -1,4 +1,4 @@
-// ? Why do we use objects in javascript?
+// ? Why do we use objects in javascript ?
 
 // They provide Key-Value pair.
 let obj = { key: "value" };
