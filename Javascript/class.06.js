@@ -15,11 +15,11 @@ const tempList = [10, 20, 28, 22];
 console.log(tempList);
 
 const nationList = [
-  "Nepal",
-  "Sri Lanka",
-  "Netherland",
-  "South Africa",
-  "Bangladesh",
+    "Nepal",
+    "Sri Lanka",
+    "Netherland",
+    "South Africa",
+    "Bangladesh",
 ];
 console.log(nationList);
 
@@ -33,20 +33,20 @@ console.log(laptopBrands.length);
 // ? Array as an object
 // this is how arrays store the data as an object
 const obj = {
-  0: "Apple",
-  1: "Banana",
-  2: "Orange",
-  3: "Mango",
+    0: "Apple",
+    1: "Banana",
+    2: "Orange",
+    3: "Mango",
 };
 console.log(obj[1]);
 
 // ? Loop in array
 for (let i = 0; i < laptopBrands.length; i++) {
-  console.log(laptopBrands[i]);
+    console.log(laptopBrands[i]);
 }
 
 // ! Methods in array
-let numList = [10, 11, 12];
+let numList = [16, 11, 12];
 
 // ? push
 // add element(s) to end of array
@@ -130,13 +130,13 @@ console.log(numList);
 // ! Call back functions
 // function which is passed as an argument to another function.
 let getSum = (x, y, callback) => {
-  let sum = x + y;
+    let sum = x + y;
 
-  callback(sum);
+    callback(sum);
 };
 
 getSum(1000, 2000, (value) => {
-  console.log(value);
+    console.log(value);
 });
 
 // ! Rest operator vs Spread operator
@@ -145,12 +145,12 @@ getSum(1000, 2000, (value) => {
 // rest acts as a collector
 
 getSum = (a, b, ...otherValues) => {
-  const total = otherValues.reduce((total, item) => {
-    total += item;
-    return total;
-  }, 0);
-  let sum = a + b + total;
-  return sum;
+    const total = otherValues.reduce((total, item) => {
+        total += item;
+        return total;
+    }, 0);
+    let sum = a + b + total;
+    return sum;
 };
 
 console.log(getSum(1, 2, 3, 4, 5));
