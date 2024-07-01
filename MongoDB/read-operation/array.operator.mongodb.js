@@ -20,3 +20,12 @@ db.movies.find({ genres: ["Drama", "Comedy"] }, { name: 1, genres: 1, _id: 0 });
 // ? $size
 // *Que: find movies whose genres size is 3
 db.movies.find({ genres: { $size: 3 } }, { name: 1, genres: 1, _id: 0 });
+
+// ? elemMatch
+// atleast one element must satisfy all the conditions within the same array
+db.scores.find({
+    points: { $elemMatch: { sub: "Social", point: { $gt: 75 } } },
+});
+
+// *Que: Find students whose scores is greater than 80 and less than 85
+db.scores.find({ scores: { $elemMatch: { $gt: 80, $lt: 85 } } });

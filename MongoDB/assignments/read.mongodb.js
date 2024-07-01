@@ -13,10 +13,7 @@ db.movies.find(
 // ? Find movies whose rating is greater than 7 and less than 9
 db.movies.find(
     {
-        $and: [
-            { "rating.average": { $gt: 7 } },
-            { "rating.average": { $lt: 9 } },
-        ],
+        "rating.average": { $lt: 9, $gt: 7 },
     },
     { name: 1, avgRating: "$rating.average", _id: 0 }
 );
@@ -29,9 +26,7 @@ db.movies.find({ status: "Running" }, { name: 1, status: 1, _id: 0 });
 
 // ? Find movies whose status is Ended and runtime is 60
 db.movies.find(
-    {
-        $and: [{ status: "Running" }, { runtime: 60 }],
-    },
+    { status: "Running", runtime: 60 },
     { name: 1, runtime: 1, status: 1, _id: 0 }
 );
 

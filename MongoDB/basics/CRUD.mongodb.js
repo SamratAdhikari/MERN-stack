@@ -13,7 +13,6 @@ db.student.insertOne({
     address: "Germany",
 });
 db.student.insertOne({
-    _id: 1011,
     name: "MrYeti",
     address: "Poles",
 });
@@ -91,3 +90,57 @@ db.student.updateOne(
 );
 
 db.student.find();
+
+// ! creating another bucket
+db.scores.insertMany([
+    {
+        name: "Subham",
+        scores: [82, 85, 88],
+        points: [
+            {
+                sub: "Social",
+                point: 82,
+            },
+            {
+                sub: "Science",
+                point: 65,
+            },
+        ],
+    },
+    {
+        name: "Suyasha",
+        scores: [75, 88, 89],
+        points: [
+            {
+                sub: "Social",
+                point: 75,
+            },
+            {
+                sub: "Science",
+                point: 84,
+            },
+        ],
+    },
+
+    {
+        name: "Smarika",
+        scores: [42, 65, 88],
+        points: [
+            {
+                sub: "Social",
+                point: 67,
+            },
+            {
+                sub: "Science",
+                point: 89,
+            },
+        ],
+    },
+]);
+
+// ! creating another bucket
+db.employee.insertMany([
+    { name: "Utsarga", income: 800, expense: 600 },
+    { name: "Smriti", income: 900, expense: 1100 },
+    { name: "Samrat", income: 1100, expense: 700 },
+]);
