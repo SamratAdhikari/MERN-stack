@@ -1,0 +1,102 @@
+const { ObjectId } = require("mongodb");
+
+use("training");
+
+// ? $push
+// adds item to end of an array field
+
+// *Que: add 10 (another value) on marks of rajan
+db.scores.updateOne(
+    { name: "Rajan" },
+    {
+        $push: {
+            marks: 10,
+        },
+    }
+);
+
+// *Que: Add 87 and 93 to marks of Suyasha
+// pushing array
+db.scores.updateOne(
+    { name: "Suyasha" },
+    {
+        $push: { marks: [87, 93] },
+    }
+);
+
+// using $each to split the array
+db.scores.updateOne(
+    { name: "Smarika" },
+    {
+        $push: { marks: { $each: [1, 2] } },
+    }
+);
+
+// ? $pop
+// removes items from the array
+// 1: removes item from the end of an array
+// -1: removes item from the front of an array
+
+// *Que: Remove last item of marks of _id: 66829f9b98493c7d6f718594
+db.scores.updateOne(
+    { _id: new ObjectId("66829f9b98493c7d6f718594") },
+    {
+        $pop: { marks: 1 },
+    }
+);
+
+// *Que: Remove first item of marks of _id: 66829f9b98493c7d6f718595
+db.scores.updateOne(
+    { _id: new ObjectId("66829f9b98493c7d6f718595") },
+    {
+        $pop: { marks: -1 },
+    }
+);
+
+// ? $pull
+// removes item based on conditions
+
+// *Que: Remove marks that are less than 70
+db.scores.updateOne(
+    { id: new ObjectId("66829f9b98493c7d6f718593") },
+    {
+        $pull: {
+            marks: { $lt: 85 },
+        },
+    }
+);
+
+// *Que: Remove subject 'Science' of Smarika
+db.scores.updateOne(
+    { name: "Smarika" },
+    {
+        $pull: {
+            points: { sub: "Science" },
+        },
+    }
+);
+
+// *Que: Change subject Science to Maths for Suyasha
+db.scores.updateOne(
+    { name: "Suyasha", "points.sub": "Science" },
+    {
+        $set: {
+            "points.$.sub": "Maths",
+        },
+    }
+);
+
+// *Que: Pull item which has sub "Science" and marks less than 85 for Suyasha
+db.scores.updateOne(
+    {
+        name: "Suyasha",
+    },
+    {
+        $pull: {
+            marks: { $lt: 85 },
+            points: { sub: "Science" },
+        },
+    }
+);
+
+db.scores.find();
