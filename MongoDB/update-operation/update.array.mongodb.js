@@ -99,4 +99,125 @@ db.scores.updateOne(
     }
 );
 
+// ? $pullAll
+// we give concrete value which needs to be removed
+db.scores.updateOne(
+    { _id: new ObjectId("66829b73e80fad4a6904fde1") },
+    {
+        $pullAll: {
+            marks: [42, 1],
+        },
+    }
+);
+
+// *Que: Push 78, 67, 83 to marks of Rajan
+db.scores.updateOne(
+    {
+        name: "Rajan",
+    },
+    {
+        $push: {
+            marks: { $each: [78, 67, 83] },
+        },
+    }
+);
+
+// ? $addToSet
+// if the values are already present in an array, it doesnt push them again
+
+db.scores.updateOne(
+    { name: "Rajan" },
+    {
+        $addToSet: {
+            marks: { $each: [78, 67, 83, 95, 52] },
+        },
+    }
+);
+
+db.scores.updateOne(
+    { name: "Rajan" },
+    {
+        $addToSet: {
+            points: { sub: "Social", point: 83 },
+        },
+    }
+);
+
+// ! Practice Questions
+
+// *Que: Push an object with sub: Science and point: 92 on Suyasha
+db.scores.updateOne(
+    { name: "Rajan" },
+    {
+        $addToSet: {
+            points: { sub: "Social", point: 83 },
+        },
+    }
+);
+
+// *Que: Push 57, 88, 96 on Suyasha's marks such that no value is duplicated
+db.scores.updateOne(
+    { name: "Suyasha" },
+    {
+        $addToSet: {
+            marks: { $each: [57, 88, 96] },
+        },
+    }
+);
+
+// *Que: Change Rajan's lucky color to 'Orange'
+db.scores.updateOne(
+    { name: "Rajan" },
+    {
+        $set: {
+            "luckyThings.color": "Orange",
+        },
+    }
+);
+
+// *Que: Pull last item from Rajan's points
+db.scores.updateOne(
+    { name: "Rajan" },
+    {
+        $pop: {
+            luckyThings: 1,
+        },
+    }
+);
+
+// *Que: Decrease age of Smarika by 20
+db.scores.updateOne(
+    { name: "Smarika" },
+    {
+        $inc: {
+            age: -20,
+        },
+    }
+);
+
+// *Que: Divide age of Rajan by 2
+db.scores.updateOne(
+    { name: "Smarika" },
+    {
+        $mul: {
+            age: 1 / 2,
+        },
+    }
+);
+
+// *Que: Push {sub:"C Program",point:72} and {sub:"C++",point:65} on Smarika's points
+db.scores.updateOne(
+    { name: "Smarika" },
+    {
+        $push: {
+            points: {
+                $each: [
+                    { sub: "C", point: 72 },
+                    { sub: "C++", point: 65 },
+                ],
+            },
+        },
+    }
+);
+
 db.scores.find();
