@@ -151,3 +151,33 @@ db.movies.aggregate([
         },
     },
 ]);
+
+// ? $skip
+
+let page = 2;
+let limit = 5;
+let skip = (page - 1) * limit;
+
+db.movies.aggregate([
+    {
+        $match: {},
+    },
+    {
+        $sort: {
+            id: 1,
+        },
+    },
+    {
+        $skip: skip,
+    },
+    {
+        $limit: limit,
+    },
+    {
+        $project: {
+            _id: 0,
+            id: 1,
+            name: 1,
+        },
+    },
+]);
