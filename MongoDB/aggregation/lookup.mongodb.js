@@ -125,29 +125,57 @@ db.person.aggregate([
 //     ownerId: new ObjectId("668bb3169f43abd35c154e39"),
 // });
 
-db.person.aggregate([
+// db.person.aggregate([
+//     {
+//         $match: {
+//             firstname: "Enish",
+//         },
+//     },
+//     {
+//         $lookup: {
+//             from: "vehicle",
+//             localField: "_id",
+//             foreignField: "ownerId",
+//             as: "vehicleData",
+//         },
+//     },
+//     {
+//         $project: {
+//             firstname: 1,
+//             lastname: 1,
+//             models: "$vehicleData.model",
+//             "vehicleData.model": 1,
+//             "vehicleData.brand": 1,
+//             lastCarBrand: {
+//                 $last: "$vehicleData.brand",
+//             },
+//         },
+//     },
+// ]);
+
+// *Que: Find the owner of Mustang GT 1969
+db.vehicle.aggregate([
     {
         $match: {
-            firstname: "Enish",
+            model: "Mustang GT 1969",
         },
     },
     {
         $lookup: {
-            from: "vehicle",
-            localField: "_id",
-            foreignField: "ownerId",
-            as: "vehicleData",
+            from: "person",
+            localField: "ownerId",
+            foreignField: "_id",
+            as: "ownerDetails",
         },
     },
     {
         $project: {
-            firstname: 1,
-            lastname: 1,
-            models: "$vehicleData.model",
-            "vehicleData.model": 1,
-            "vehicleData.brand": 1,
-            lastCarBrand: {
-                $last: "$vehicleData.brand",
+            name: {
+                $concat: [
+                    { $first: "$ownerDetails.firstname" },
+                    " ",
+                    { $first: "$ownerDetails.lastname" },
+                ],
             },
         },
     },
