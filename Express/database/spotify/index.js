@@ -1,13 +1,18 @@
 import express from "express";
-import mongoose from "mongoose";
+import connectDB from "./connect.db.js";
+import songRoutes from "./song/song.controller.js";
 
 // initialize the app
-app = express();
+const app = express();
 
 // make the app understand JSON data
 app.use(express.json());
 
 // connect database
+connectDB();
+
+// routes
+app.use(songRoutes);
 
 // network port and server
 const PORT = 8000;
