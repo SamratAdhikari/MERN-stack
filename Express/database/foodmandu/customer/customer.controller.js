@@ -51,12 +51,85 @@ router.get("/customer/detail/:id", async (req, res) => {
         return res.status(400).send({ message: "Cutomer not found ... " });
     }
 
+    return res.status(200).send({
+        message: "Customer detail retrieved successfully",
+        customerDetail: customerDetail,
+    });
+});
+
+// ? delete a customer by Id
+router.delete("/customer/delete/:id", async (req, res) => {
+    // extract customer id from req.params
+    const customerId = req.params.id;
+
+    // check for mongo id validity
+    const isValidId = mongoose.isValidObjectId(customerId);
+    console.log(isValidId);
+
+    // if not valid mongo id, throw error
+    if (!isValidId) {
+        return res.status(400).send({ message: "Invalid customer id" });
+    }
+
+    // find customer using customer id
+    const customer = await Customer.findById(customerId);
+    console.log(customer);
+
+    // if not customer, throw error
+    if (!customer) {
+        return res.status(400).send({ message: "Customer not found" });
+    }
+
+    // delete customer
+    await Customer.deleteOne({
+        _id: customerId,
+    });
+
+    // send res
     return res
         .status(200)
-        .send({
-            message: "Customer detail retrieved successfully",
-            customerDetail: customerDetail,
-        });
+        .send(`Customer ${customer.email} deleted successfully.`);
+});
+
+// edit customer by id
+router.put("/customer/edit/:id", async (req, res) => {
+    // extract customer id from req.params
+    const customerId = req.params.id;
+
+    // check for mongo id validity
+    const isValidId = mongoose.isValidObjectId(customerId);
+
+    // if not valid mongo id, throw error
+    if (!isValidId) {
+        return res.status(400).send("Invalid customer id");
+    }
+
+    // find customer
+    const customer = await Customer.findById(customerId);
+
+    // if not customer, throw error
+    if (!customer) {
+        return res.status(400).send("Customer not found");
+    }
+
+    // extract new values from req.body
+    const newData = req.body;
+
+    // update customer
+    await Customer.updateOne(
+        { _id: customerId },
+        {
+            $set: {
+                ...newData,
+            },
+        }
+    );
+
+    // send res
+
+    return res.status(200).send({
+        message: `Customer ${customer.email} updated successfully`,
+    });
 });
 
 export default router;
