@@ -13,16 +13,16 @@ import {
 
 const router = express.Router();
 
-// *add food item
+// *POST: add food item
 router.post("/add", validateFoodDetail, addFoodItem);
 
-// *get all food item
+// *GET: display all food item
 router.get("/list", getFoodList);
 
-// *get food detail by id
+// *GET: Display food detail by id
 router.get("/detail/:id", validateFoodId, validateFoodItemExistence, getFood);
 
-// *delete food by id
+// *DELETE: delete food by id
 router.delete(
     "/delete/:id",
     validateFoodId,
@@ -30,7 +30,7 @@ router.delete(
     deleteFood
 );
 
-// *update food by id
+// *PUT: update food by id
 router.put(
     "/update/:id",
     validateFoodId,
