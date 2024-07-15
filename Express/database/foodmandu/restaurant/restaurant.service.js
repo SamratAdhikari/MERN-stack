@@ -70,3 +70,11 @@ export const addRestaurant = async (req, res) => {
         message: `Restaurant ${newRestaurant.name} is added successfully`,
     });
 };
+
+export const getRestaurantList = async (req, res) => {
+    const restaurantList = await Restaurant.find();
+
+    return res
+        .status(200)
+        .send({ message: "The registered restaurants are:", restaurantList });
+};
