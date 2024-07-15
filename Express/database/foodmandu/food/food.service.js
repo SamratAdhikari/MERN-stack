@@ -24,7 +24,7 @@ const addFoodItem = async (req, res) => {
     // extract new data from req.body
     const newFood = req.body;
 
-    // insert into databse
+    // insert into database
     await Food.create(newFood);
 
     // send res
@@ -77,7 +77,7 @@ const validateFoodItemExistence = async (req, res, next) => {
 const getFood = (req, res) => {
     return res.status(200).send({
         message: "The detail of the food item is:",
-        foodIten: req.foodItem,
+        foodItem: req.foodItem,
     });
 };
 
