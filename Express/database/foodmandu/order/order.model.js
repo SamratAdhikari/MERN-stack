@@ -12,14 +12,6 @@ const orderSchema = new mongoose.Schema({
         ref: "Food",
         required: true,
     },
-    customerDetail: {
-        type: Object,
-        required: true,
-    },
-    foodDetail: {
-        type: Object,
-        required: true,
-    },
     quantity: {
         type: Number,
         required: true,

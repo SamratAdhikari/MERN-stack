@@ -64,8 +64,6 @@ const addOrder = async (req, res) => {
     await Order.create({
         customerId: customer._id,
         foodId: food._id,
-        customerDetail: customer,
-        foodDetail: food,
         quantity,
         orderDate,
         totalPrice,
@@ -76,21 +74,65 @@ const addOrder = async (req, res) => {
 
 // * get all order list
 const getOrderList = async (req, res) => {
-    try {
-        const orderList = await Order.find();
-        res.status(200).send({ message: "The order list is:", orderList });
-    } catch (error) {
-        res.status(500).send({ message: error.message });
-    }
+    const orderList = await Order.aggregate([
+        {
+            $lookup: {
+                from: "customers",
+                localField: "customerId",
+                foreignField: "_id",
+                as: "customerDetail",
+            },
+        },
+        {
+            $lookup: {
+                from: "foods",
+                localField: "foodId",
+                foreignField: "_id",
+                as: "foodDetail",
+            },
+        },
+        {
+            $unwind: "$customerDetail",
+        },
+        {
+            $unwind: "$foodDetail",
+        },
+    ]);
+    res.status(200).send({ message: "The order list is:", orderList });
 };
 
 // * get order detail by id
 const getOrder = async (req, res) => {
     const orderId = req.params.id;
-    const orderDetail = await Order.findById(orderId);
+
+    const orderDetail = await Order.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(orderId) } },
+        {
+            $lookup: {
+                from: "customers",
+                localField: "customerId",
+                foreignField: "_id",
+                as: "customerDetail",
+            },
+        },
+        {
+            $lookup: {
+                from: "foods",
+                localField: "foodId",
+                foreignField: "_id",
+                as: "foodDetail",
+            },
+        },
+        {
+            $unwind: "$customerDetail",
+        },
+        {
+            $unwind: "$foodDetail",
+        },
+    ]);
     res.status(200).send({
         message: "The detail of the order is:",
-        orderDetail,
+        orderDetail: orderDetail,
     });
 };
 
@@ -104,6 +146,7 @@ const deleteOrder = async (req, res) => {
 // * update order data by id
 const updateOrder = async (req, res) => {
     const orderId = req.params.id;
+
     const { customerEmail, foodName, quantity, orderDate } = req.body;
 
     const customer = await Customer.findOne({ email: customerEmail });
@@ -120,8 +163,6 @@ const updateOrder = async (req, res) => {
     const updatedOrderData = {
         customerId: customer._id,
         foodId: food._id,
-        customerDetail: customer,
-        foodDetail: food,
         quantity,
         orderDate,
         totalPrice,
@@ -129,8 +170,31 @@ const updateOrder = async (req, res) => {
 
     await Order.findByIdAndUpdate(orderId, updatedOrderData, { new: true });
 
-    const updatedOrderDetail = await Order.findById(orderId);
-
+    const updatedOrderDetail = await Order.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(orderId) } },
+        {
+            $lookup: {
+                from: "customers",
+                localField: "customerId",
+                foreignField: "_id",
+                as: "customerDetail",
+            },
+        },
+        {
+            $lookup: {
+                from: "foods",
+                localField: "foodId",
+                foreignField: "_id",
+                as: "foodDetail",
+            },
+        },
+        {
+            $unwind: "$customerDetail",
+        },
+        {
+            $unwind: "$foodDetail",
+        },
+    ]);
     res.status(200).send({
         message: "Order updated!",
         orderDetail: updatedOrderDetail,
