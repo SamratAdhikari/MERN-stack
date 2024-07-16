@@ -12,12 +12,11 @@ const orderSchema = new mongoose.Schema({
         ref: "Food",
         required: true,
     },
-    customerDetail: {
-        type: Object,
-        required: true,
+    customerEmail: {
+        type: String,
     },
-    foodDetail: {
-        type: Object,
+    foodName: {
+        type: String,
         required: true,
     },
     quantity: {
