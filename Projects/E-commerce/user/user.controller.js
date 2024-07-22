@@ -3,7 +3,7 @@ import {
     loginUserValidationSchema,
     userDataValidationSchema,
 } from "./user.validation.js";
-import validateReqBody from "../middleware/authentication.middleware.js";
+import validateReqBody from "../middleware/validate.req.body.js";
 import { loginUser, registerUser } from "./user.service.js";
 
 const router = express.Router();
