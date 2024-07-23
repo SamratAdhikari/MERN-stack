@@ -2,7 +2,13 @@ import express from "express";
 import { isSeller, isUser } from "../middleware/authenticate.middleware.js";
 import validateReqBody from "../middleware/validate.req.body.js";
 import { productDataValidationSchema } from "./product.validation.js";
-import { addProduct, getProductList } from "./product.service.js";
+import {
+    addProduct,
+    deleteProduct,
+    getProductList,
+    updateProduct,
+} from "./product.service.js";
+import validateMongoIdFromParams from "../middleware/validate.mongo.id.js";
 
 const router = express.Router();
 
@@ -15,6 +21,23 @@ router.post(
     isSeller,
     validateReqBody(productDataValidationSchema),
     addProduct
+);
+
+// *DELETE: delete product
+router.delete(
+    "/product/delete/:id",
+    isSeller,
+    validateMongoIdFromParams,
+    deleteProduct
+);
+
+// *PUT: update product data
+router.put(
+    "/product/update/:id",
+    isSeller,
+    validateMongoIdFromParams,
+    validateReqBody(productDataValidationSchema),
+    updateProduct
 );
 
 export default router;
