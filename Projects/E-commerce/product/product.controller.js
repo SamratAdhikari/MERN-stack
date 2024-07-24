@@ -1,11 +1,16 @@
 import express from "express";
 import { isSeller, isUser } from "../middleware/authenticate.middleware.js";
 import validateReqBody from "../middleware/validate.req.body.js";
-import { productDataValidationSchema } from "./product.validation.js";
+import {
+    paginationDataValidationSchema,
+    productDataValidationSchema,
+} from "./product.validation.js";
 import {
     addProduct,
     deleteProduct,
+    getProductDetail,
     getProductList,
+    getSellerProducts,
     updateProduct,
 } from "./product.service.js";
 import validateMongoIdFromParams from "../middleware/validate.mongo.id.js";
@@ -14,6 +19,17 @@ const router = express.Router();
 
 // *GET: list all products
 router.get("/product/list", isUser, getProductList);
+
+// *GET: get product detail by id
+router.get("/product/detail/:id", isUser, getProductDetail);
+
+// *POST: list products for sellers
+router.post(
+    "/product/seller/list",
+    isSeller,
+    validateReqBody(paginationDataValidationSchema),
+    getSellerProducts
+);
 
 // *POST: add a product
 router.post(

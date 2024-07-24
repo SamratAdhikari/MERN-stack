@@ -29,6 +29,68 @@ export const addProduct = async (req, res) => {
     });
 };
 
+// ! product detail helper
+export const getProductDetail = async (req, res) => {
+    // extract product id from req.params
+    const productId = req.params.id;
+
+    // find product using product id
+    const product = await Product.findOne({ _id: productId });
+
+    // if not found, throw error
+    if (!product) {
+        return res.status(404).send({ message: "Product not found!" });
+    }
+
+    // send response
+    return res
+        .status(200)
+        .send({ message: "Product Detail is ...", productDetail: product });
+};
+
+// ! seller products helper
+export const getSellerProducts = async (req, res) => {
+    // extract pagination data from req.body
+    const { page, limit, searchText } = req.body;
+
+    // calc skip
+    const skip = (page - 1) * limit;
+
+    // condition for searchText
+    let match = { sellerId: req.loggedInUserId };
+
+    if (searchText) {
+        match.name = { $regex: searchText, $options: "i" };
+    }
+
+    // get all products
+    const products = await Product.aggregate([
+        {
+            $match: match,
+        },
+        {
+            $skip: skip,
+        },
+        {
+            $limit: limit,
+        },
+        {
+            $project: {
+                name: 1,
+                price: 1,
+                brand: 1,
+                image: 1,
+                description: { $substr: ["$description", 0, 200] },
+            },
+        },
+    ]);
+
+    // send response
+    return res
+        .status(200)
+        .send({ message: "Seller's products are ...", products });
+};
+
 // ! delete product helper
 export const deleteProduct = async (req, res) => {
     // extract product id from req.params
