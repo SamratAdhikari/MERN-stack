@@ -91,6 +91,49 @@ export const getSellerProducts = async (req, res) => {
         .send({ message: "Seller's products are ...", products });
 };
 
+// ! buyer products helper
+export const getBuyerProducts = async (req, res) => {
+    // extract pagination data from req.body
+    const { page, limit, searchText } = req.body;
+
+    // condition for searchText
+    let match = {};
+
+    if (searchText) {
+        match.name = { $regex: searchText, $options: "i" };
+    }
+
+    // calc skip
+    const skip = (page - 1) * limit;
+
+    // find products
+    const products = await Product.aggregate([
+        {
+            $match: match,
+        },
+        {
+            $skip: skip,
+        },
+        {
+            $limit: limit,
+        },
+        {
+            $project: {
+                name: 1,
+                price: 1,
+                brand: 1,
+                image: 1,
+                description: { $substr: ["$description", 0, 200] },
+            },
+        },
+    ]);
+
+    // send response
+    return res
+        .status(200)
+        .send({ message: "All the products are ...", products });
+};
+
 // ! delete product helper
 export const deleteProduct = async (req, res) => {
     // extract product id from req.params

@@ -1,5 +1,9 @@
 import express from "express";
-import { isSeller, isUser } from "../middleware/authenticate.middleware.js";
+import {
+    isBuyer,
+    isSeller,
+    isUser,
+} from "../middleware/authenticate.middleware.js";
 import validateReqBody from "../middleware/validate.req.body.js";
 import {
     paginationDataValidationSchema,
@@ -8,6 +12,7 @@ import {
 import {
     addProduct,
     deleteProduct,
+    getBuyerProducts,
     getProductDetail,
     getProductList,
     getSellerProducts,
@@ -29,6 +34,14 @@ router.post(
     isSeller,
     validateReqBody(paginationDataValidationSchema),
     getSellerProducts
+);
+
+// *POST: lust products for all buyers
+router.post(
+    "/product/buyer/list",
+    isBuyer,
+    validateReqBody(paginationDataValidationSchema),
+    getBuyerProducts
 );
 
 // *POST: add a product
