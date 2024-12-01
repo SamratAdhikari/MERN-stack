@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Card</title>
+        <style>
+            body {
+                background-color: rgb(235, 232, 198);
+                height: 100vh;
+                width: 100vw;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .card {
+                height: 50%;
+                width: 40%;
+                border: 1px solid black;
+                border-radius: 1rem;
+                background-color: rgb(238, 236, 236);
+                box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+                    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+            }
+
+            .image {
+                height: 50%;
+                width: 100%;
+                object-fit: cover;
+                border-radius: 1rem 1rem 0rem 0rem;
+            }
+
+            .text {
+                margin: 1rem;
+            }
+
+            .buttons {
+                display: flex;
+                justify-content: flex-end;
+                gap: 2rem;
+            }
+
+            .btn {
+                cursor: pointer;
+                font-size: 1rem;
+                padding: 0.7rem;
+                border-radius: 0.5rem;
+                background-color: MediumSeaGreen;
+            }
+
+            .btn:hover {
+                background-color: lightblue;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <img
+                class="image"
+                src="https://i0.wp.com/www.newagepet.com/wp-content/uploads/2024/01/pet-lizard-tongue.jpg?fit=1300%2C868&ssl=1"
+                alt="Lizard"
+            />
+            <div class="text">
+                <h2>Lizard</h2>
+
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Blanditiis sequi ducimus atque dolores architecto magni
+                    porro praesentium officiis. Itaque eveniet ea laudantium
+                    cumque alias cupiditate cum possimus amet culpa. Repellat,
+                    quod tempora!
+                </p>
+                <div class="buttons">
+                    <button class="btn">LEARN MORE</button>
+                    <button class="btn">SHARE</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
