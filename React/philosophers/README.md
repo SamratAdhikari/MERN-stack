@@ -1,3 +1,3 @@
 ## Looks something like this ...
 
-<img src="./sample.png" alt="Sample Image" style="width:100%; max-width:100%;">
+![alt text](./sample.png)
