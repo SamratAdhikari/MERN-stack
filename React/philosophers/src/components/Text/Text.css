@@ -1,0 +1,11 @@
+.title {
+    width: 100%;
+    color: rgb(197, 197, 197);
+}
+
+.info {
+    text-align: justify;
+    color: rgb(204, 201, 201);
+    font-weight: normal;
+    margin-top: -1rem;
+}
