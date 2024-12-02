@@ -8,7 +8,7 @@ const Card = ({ source, title, info }) => {
     return (
         <div className="container">
             <Img source={source} />
-            <div className="contains">
+            <div className="contents">
                 <Title title={title} />
                 <Info info={info} />
             </div>
