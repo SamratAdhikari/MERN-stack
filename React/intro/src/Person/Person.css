@@ -1,0 +1,13 @@
+.card {
+    border: 0.3rem solid grey;
+    border-radius: 0.8rem;
+    padding: 0.3rem;
+    width: 25rem;
+    height: 40rem;
+}
+
+.image {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+}
