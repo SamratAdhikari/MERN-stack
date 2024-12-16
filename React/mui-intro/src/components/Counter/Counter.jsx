@@ -12,7 +12,7 @@ const Counter = () => {
     return (
         <Box>
             <Box>
-                <Typography variant="h3">Count: {count}</Typography>
+                <Typography variant="h3">Rating: {count}</Typography>
                 <Button
                     variant="contained"
                     color="success"
@@ -44,15 +44,15 @@ const Counter = () => {
                 </Button>
             </Box>
 
-            <Box>
+            <Box sx={{ display: "flex", justifyItems: "center" }}>
                 <Button
                     variant="contained"
                     color="info"
                     onClick={() => {
-                        setCount("Clicked");
+                        setCount("Deleted Rating");
                     }}
                 >
-                    Change Value
+                    Delete
                 </Button>
             </Box>
         </Box>
