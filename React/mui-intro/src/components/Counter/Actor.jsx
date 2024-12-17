@@ -8,11 +8,11 @@ const Actor = () => {
             name: "Cilian Murphy",
         },
         {
-            id: 1,
+            id: 2,
             name: "Johnny Depp",
         },
         {
-            id: 1,
+            id: 3,
             name: "Robert Pattinson",
         },
     ]);
