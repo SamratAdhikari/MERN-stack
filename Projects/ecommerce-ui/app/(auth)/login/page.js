@@ -2,11 +2,16 @@
 
 import { loginUserValidationSchema } from "@/validation/login.user.validation.schema";
 import { Box, Button, FormControl, TextField, Typography } from "@mui/material";
+import axios from "axios";
 import { Formik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 // helo
 const page = () => {
+    const router = useRouter();
+
     return (
         <Box className="flex justify-center items-center flex-col">
             <Typography variant="h3" color="success">
@@ -19,8 +24,26 @@ const page = () => {
                     password: "",
                 }}
                 validationSchema={loginUserValidationSchema}
-                onSubmit={(values) => {
-                    console.log(values);
+                onSubmit={async (values) => {
+                    try {
+                        const response = await axios.post(
+                            "http://localhost:8080/user/login",
+                            values
+                        );
+
+                        localStorage.setItem(
+                            "token",
+                            response.data.accessToken
+                        );
+
+                        localStorage.setItem(
+                            "userRole",
+                            response.data.userDetails.role
+                        );
+                        router.push("/");
+                    } catch (err) {
+                        console.log(err);
+                    }
                 }}
             >
                 {(formik) => {
@@ -59,6 +82,11 @@ const page = () => {
                             >
                                 login
                             </Button>
+                            <div className="text-xs text-gray-500 justify-self-center">
+                                <Link href={"/register"}>
+                                    New here? Register
+                                </Link>
+                            </div>
                         </form>
                     );
                 }}

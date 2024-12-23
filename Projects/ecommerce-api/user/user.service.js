@@ -62,7 +62,9 @@ export const loginUser = async (req, res) => {
     // generate access token
     const payload = { email: user.email };
     const privateKey = process.env.ACCESS_TOKEN_SECRET_KEY;
-    const token = jwt.sign(payload, privateKey);
+    const token = jwt.sign(payload, privateKey, {
+        expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
+    });
 
     // send response
     return res.status(200).send({
