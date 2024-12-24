@@ -6,11 +6,17 @@ import axios from "axios";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 // helo
 const page = () => {
     const router = useRouter();
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            router.push("/");
+        }
+    });
 
     return (
         <Box className="flex justify-center items-center flex-col">
@@ -39,6 +45,11 @@ const page = () => {
                         localStorage.setItem(
                             "userRole",
                             response.data.userDetails.role
+                        );
+
+                        localStorage.setItem(
+                            "firstname",
+                            response.data.userDetails.firstname
                         );
                         router.push("/");
                     } catch (err) {
@@ -82,7 +93,7 @@ const page = () => {
                             >
                                 login
                             </Button>
-                            <div className="text-xs text-gray-500 justify-self-center">
+                            <div className="text-xs text-gray-500 self-center hover:text-blue-500">
                                 <Link href={"/register"}>
                                     New here? Register
                                 </Link>

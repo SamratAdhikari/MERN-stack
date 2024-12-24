@@ -11,10 +11,22 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
+import axios from "axios";
 import { Formik } from "formik";
-import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 const page = () => {
+    const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            router.push("/");
+        }
+    });
+
     return (
         <Box>
             <Formik
@@ -28,8 +40,29 @@ const page = () => {
                     role: "",
                 }}
                 validationSchema={registerUserValidationSchema}
-                onSubmit={(values) => {
-                    console.log(values);
+                onSubmit={async (values) => {
+                    try {
+                        const response = await axios.post(
+                            "http://localhost:8080/user/register",
+                            values
+                        );
+
+                        console.log("here");
+
+                        localStorage.setItem(
+                            "token",
+                            response.data.accessToken
+                        );
+
+                        localStorage.setItem(
+                            "userRole",
+                            response.data.userDetails.role
+                        );
+                        localStorage.setItem("firstname", values.firstname);
+                        router.push("/");
+                    } catch (err) {
+                        console.log(err);
+                    }
                 }}
             >
                 {(formik) => {
@@ -142,6 +175,11 @@ const page = () => {
                             >
                                 register
                             </Button>
+                            <div className="text-xs text-gray-500 self-center hover:text-blue-500">
+                                <Link href={"/login"}>
+                                    Already have an account? Login
+                                </Link>
+                            </div>
                         </form>
                     );
                 }}
