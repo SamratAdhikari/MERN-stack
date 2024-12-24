@@ -47,3 +47,15 @@ let numbers: NumberType = {
         return this.num1 + this.num2;
     },
 };
+
+type funcType = (firstname: string, lastname: string) => string;
+
+// const getFullName = (firstname: string, lastname: string): string => {
+//     return `${firstname} ${lastname}`;
+// };
+
+const getFullName: funcType = (firstname, lastname) => {
+    return `${firstname} ${lastname}`;
+};
+
+console.log(getFullName("Samrat", "Adhikari"));
