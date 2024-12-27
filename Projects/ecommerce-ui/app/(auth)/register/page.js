@@ -1,23 +1,26 @@
 "use client";
 
+import $axios from "@/lib/axios/axios.instance";
 import { registerUserValidationSchema } from "@/validation/register.user.validation.schema";
 import {
     Box,
     Button,
     FormControl,
     InputLabel,
+    LinearProgress,
     MenuItem,
     Select,
     TextField,
     Typography,
 } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-const page = () => {
+const Page = () => {
     const router = useRouter();
 
     useEffect(() => {
@@ -25,10 +28,26 @@ const page = () => {
         if (token) {
             router.push("/");
         }
+    }, [router]);
+
+    const { isPending, error, mutate } = useMutation({
+        mutationKey: ["register-user"],
+        mutationFn: async (values) => {
+            const response = await $axios.post("/user/register", values);
+            return response.data; // Return response data for further processing
+        },
+
+        onSuccess: (data) => {
+            localStorage.setItem("token", data.accessToken);
+            localStorage.setItem("userRole", data.userDetails.role);
+            localStorage.setItem("firstname", data.userDetails.firstname);
+            router.push("/");
+        },
     });
 
     return (
         <Box>
+            {isPending && <LinearProgress color="secondary" />}
             <Formik
                 initialValues={{
                     email: "",
@@ -40,36 +59,15 @@ const page = () => {
                     role: "",
                 }}
                 validationSchema={registerUserValidationSchema}
-                onSubmit={async (values) => {
-                    try {
-                        const response = await axios.post(
-                            "http://localhost:8080/user/register",
-                            values
-                        );
-
-                        console.log("here");
-
-                        localStorage.setItem(
-                            "token",
-                            response.data.accessToken
-                        );
-
-                        localStorage.setItem(
-                            "userRole",
-                            response.data.userDetails.role
-                        );
-                        localStorage.setItem("firstname", values.firstname);
-                        router.push("/");
-                    } catch (err) {
-                        console.log(err);
-                    }
+                onSubmit={(values) => {
+                    mutate(values); // Pass form values to mutate
                 }}
             >
                 {(formik) => {
                     return (
                         <form
                             onSubmit={formik.handleSubmit}
-                            className="flex flex-col w-[400px] mt-6 bg-slate-100 rounded-e-lg p-6 gap-4 rounded-lg shadow-lg"
+                            className="flex flex-col w-[400px] bg-slate-100 rounded-e-lg p-6 gap-4 rounded-lg shadow-lg"
                         >
                             <Typography
                                 variant="h4"
@@ -139,12 +137,12 @@ const page = () => {
                                 ) : null}
                             </FormControl>
                             <FormControl>
-                                <InputLabel id="demo-simple-select-label">
+                                <InputLabel id="gender-select-label">
                                     Gender
                                 </InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
+                                    labelId="gender-select-label"
+                                    id="gender-select"
                                     {...formik.getFieldProps("gender")}
                                     label="Gender"
                                 >
@@ -154,12 +152,12 @@ const page = () => {
                                 </Select>
                             </FormControl>
                             <FormControl>
-                                <InputLabel id="demo-simple-select-label">
+                                <InputLabel id="role-select-label">
                                     Role
                                 </InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
+                                    labelId="role-select-label"
+                                    id="role-select"
                                     {...formik.getFieldProps("role")}
                                     label="Role"
                                     defaultValue="seller"
@@ -171,9 +169,10 @@ const page = () => {
                             <Button
                                 type="submit"
                                 variant="contained"
-                                color="info"
+                                color="secondary"
+                                disabled={isPending}
                             >
-                                register
+                                Register
                             </Button>
                             <div className="text-xs text-gray-500 self-center hover:text-blue-500">
                                 <Link href={"/login"}>
@@ -188,4 +187,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;
