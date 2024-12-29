@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
         <html lang="en">
             <ReactQueryClientProvider>
                 <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                    className={`bg-white w-full h-screen ${geistSans.variable} ${geistMono.variable} antialiased`}
                 >
                     {children}
                 </body>

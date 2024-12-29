@@ -1,6 +1,7 @@
 "use client";
 
 import { productCategories } from "@/constants/general.constants";
+import $axios from "@/lib/axios/axios.instance";
 import { productDataValidationSchema } from "@/validation/product.validation.schema";
 import {
     Button,
@@ -9,17 +10,61 @@ import {
     FormControlLabel,
     FormHelperText,
     InputLabel,
+    LinearProgress,
     MenuItem,
     Select,
     TextField,
     Typography,
 } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { Formik } from "formik";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const page = () => {
+    const router = useRouter();
+
+    const [token, setToken] = useState("");
+
+    useEffect(() => {
+        const userToken = localStorage.getItem("token");
+        if (!userToken) {
+            router.push("/login");
+        }
+
+        const userRole = localStorage.getItem("userRole");
+        if (userRole === "buyer") {
+            router.push("/");
+        }
+
+        setToken(userToken);
+    }, [router]);
+
+    const { isPending, error, mutate } = useMutation({
+        mutationKey: ["add-product"],
+        mutationFn: async (values) => {
+            const response = await $axios.post("/product/add", values, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return response.data;
+        },
+
+        onSuccess: (res) => {
+            console.log(res);
+            router.push("/");
+        },
+
+        onError: (error) => {
+            console.log(error);
+        },
+    });
+
     return (
         <div className="w-full min-h-screen flex flex-col justify-center items-center bg-gray-100 py-4">
+            {isPending && <LinearProgress color="secondary" />}
             <Formik
                 initialValues={{
                     name: "",
@@ -32,7 +77,7 @@ const page = () => {
                 }}
                 validationSchema={productDataValidationSchema}
                 onSubmit={(values) => {
-                    console.log(values);
+                    mutate(values);
                 }}
             >
                 {(formik) => {
@@ -160,6 +205,7 @@ const page = () => {
                             </FormControl>
 
                             <Button
+                                disabled={isPending}
                                 variant="contained"
                                 color="primary"
                                 type="submit"

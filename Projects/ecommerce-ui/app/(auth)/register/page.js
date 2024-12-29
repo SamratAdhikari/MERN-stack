@@ -14,7 +14,6 @@ import {
     Typography,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -34,14 +33,14 @@ const Page = () => {
         mutationKey: ["register-user"],
         mutationFn: async (values) => {
             const response = await $axios.post("/user/register", values);
-            return response.data; // Return response data for further processing
+            return response.data;
         },
 
         onSuccess: (data) => {
-            localStorage.setItem("token", data.accessToken);
-            localStorage.setItem("userRole", data.userDetails.role);
-            localStorage.setItem("firstname", data.userDetails.firstname);
-            router.push("/");
+            // localStorage.setItem("token", data.accessToken);
+            // localStorage.setItem("userRole", data.userDetails.role);
+            // localStorage.setItem("firstname", data.userDetails.firstname);
+            router.push("/login");
         },
     });
 
