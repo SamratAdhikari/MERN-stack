@@ -8,6 +8,7 @@ import {
     deleteItemFromCart,
     flushCart,
     validateProductId,
+    getCartItems, // Import the new service function
 } from "./cart.service.js";
 
 const router = express.Router();
@@ -21,11 +22,13 @@ router.post(
     addItemToCart
 );
 
+// *GET: show the cart items
+router.get("/cart/", isBuyer, getCartItems);
+
 // *DELETE: flush cart
 router.delete("/cart/item/flush", isBuyer, flushCart);
 
 // *DELETE: remove single item from cart
-// id here is cartId
 router.delete(
     "/cart/item/delete/:id",
     isBuyer,

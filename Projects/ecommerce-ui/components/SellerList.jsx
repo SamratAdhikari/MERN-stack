@@ -1,33 +1,78 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import ProductCard from "./ProductCard";
+import { useQuery } from "@tanstack/react-query";
+import $axios from "@/lib/axios/axios.instance";
+import { Button, CircularProgress, Pagination } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const SellerList = () => {
+    const [page, setPage] = useState(1);
+
+    const router = useRouter();
+
+    const { isLoading, isError, data } = useQuery({
+        queryKey: ["seller-product-list", page],
+        queryFn: async () => {
+            const response = await $axios.post("/product/seller/list", {
+                page: page,
+                limit: 2,
+            });
+            return response.data;
+        },
+    });
+
+    const productList = data?.products || [];
+    console.log("prod lsit", productList);
+
     return (
-        <div className="flex flex-wrap items-center justify-center gap-6 p-4">
-            <ProductCard
-                className="flex flex-col items-center justify-center gap-4 shadow-xl"
-                image="https://cdn.achology.com/wp-content/uploads/20240610133614/Thus-Spoke-Zarathustra_-by-Friedrich-Nietzsche-450x686.jpg"
-                name="Thus Spoke Zarathustra"
-                price="15.56"
-                description="“Thus Spoke Zarathustra” is a seminal work by Friedrich Nietzsche, a renowned philosopher of the 19th century. First published between 1883 and 1885, this book presents Nietzsche’s philosophical ideas through the character of Zarathustra, an ancient Persian prophet."
-            />
+        <div className="flex flex-col min-h-screen gap-6 p-4 justify-between items-center">
+            <div className="flex flex-col gap-6 items-center justify-center">
+                {isLoading && <CircularProgress size={100} />}
+                <div className="flex flex-wrap items-center justify-center gap-6 p-4">
+                    {isError && (
+                        <p className="text-gray-500">Something went wrong!</p>
+                    )}
+                    {productList.length > 0
+                        ? productList.map((product, index) => (
+                              <ProductCard
+                                  className="flex flex-col items-center justify-center gap-4 shadow-xl"
+                                  key={product._id}
+                                  _id={product._id}
+                                  image={
+                                      product.image ||
+                                      "https://via.placeholder.com/150"
+                                  }
+                                  name={product.name}
+                                  price={product.price}
+                                  brand={product.brand}
+                                  description={product.description}
+                              />
+                          ))
+                        : !isLoading && (
+                              <p className="text-gray-500">No products found</p>
+                          )}
+                </div>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className="w-[200px]"
+                    onClick={() => {
+                        router.push("/add-product");
+                    }}
+                >
+                    Add Product
+                </Button>
+            </div>
 
-            <ProductCard
-                className="flex flex-col items-center justify-center gap-4 shadow-xl"
-                image="https://prodimage.images-bn.com/pimages/9780359669189_p0_v2_s600x595.jpg"
-                name="Meditations"
-                price="10.00"
-                description="Meditations is a series of personal reflections by Marcus Aurelius, Roman Emperor 161-180 CE, written over a series of years in far-flung places as he led the Romans in military campaigns, quashed revolts, and dealt with the other tribulations of governing the Empire. "
-            />
-
-            <ProductCard
-                className="flex flex-col items-center justify-center gap-4 shadow-xl"
-                image="https://rochemamabolo.wordpress.com/wp-content/uploads/2019/12/the-republic-90.jpg"
-                name="Plato's Republic"
-                price="12.00"
-                description="The book is a dialogue among the students. The dialogue explores two central questions:
-
-The first question is “what is justice?”  Socrates addresses this question both in terms of political communities and in terms of the individual person or soul."
+            <Pagination
+                page={page}
+                count={5}
+                color="secondary"
+                onChange={(_, value) => {
+                    setPage(value);
+                }}
             />
         </div>
     );

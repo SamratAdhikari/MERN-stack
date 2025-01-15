@@ -80,7 +80,7 @@ export const getSellerProducts = async (req, res) => {
                 price: 1,
                 brand: 1,
                 image: 1,
-                description: { $substr: ["$description", 0, 200] },
+                description: { $substr: ["$description", 0, 300] },
             },
         },
     ]);
@@ -123,7 +123,7 @@ export const getBuyerProducts = async (req, res) => {
                 price: 1,
                 brand: 1,
                 image: 1,
-                description: { $substr: ["$description", 0, 200] },
+                description: { $substr: ["$description", 0, 300] },
             },
         },
     ]);

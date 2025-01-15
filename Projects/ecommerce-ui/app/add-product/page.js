@@ -43,12 +43,7 @@ const page = () => {
     const { isPending, error, mutate } = useMutation({
         mutationKey: ["add-product"],
         mutationFn: async (values) => {
-            const response = await $axios.post("/product/add", values, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const response = await $axios.post("/product/add", values);
             return response.data;
         },
 
