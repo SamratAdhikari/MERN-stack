@@ -8,8 +8,10 @@ import {
     deleteItemFromCart,
     flushCart,
     validateProductId,
-    getCartItems, // Import the new service function
+    getCartItems,
+    getItemCount, // Import the new service function
 } from "./cart.service.js";
+import { paginationDataValidationSchema } from "../product/product.validation.js";
 
 const router = express.Router();
 
@@ -22,11 +24,20 @@ router.post(
     addItemToCart
 );
 
-// *GET: show the cart items
-router.get("/cart/", isBuyer, getCartItems);
+// *POST: show the cart items
+// ? list cart item
+router.post(
+    "/cart/list",
+    isBuyer,
+    validateReqBody(paginationDataValidationSchema),
+    getCartItems
+);
+
+// *GET: get number of items in the cart
+router.get("/cart/item/count", isBuyer, getItemCount);
 
 // *DELETE: flush cart
-router.delete("/cart/item/flush", isBuyer, flushCart);
+router.delete("/cart/flush", isBuyer, flushCart);
 
 // *DELETE: remove single item from cart
 router.delete(

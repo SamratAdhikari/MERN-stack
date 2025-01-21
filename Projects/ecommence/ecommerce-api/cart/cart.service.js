@@ -49,15 +49,50 @@ export const addItemToCart = async (req, res) => {
 };
 
 // ! get all cart items helper
-export const getCartItems = async (req, res, next) => {
-    try {
-        const cartItems = await Cart.find({ buyerId: req.loggedInUserId })
-            .populate("productId")
-            .exec();
-        res.status(200).json(cartItems);
-    } catch (error) {
-        next(error);
-    }
+export const getCartItems = async (req, res) => {
+    const { page, limit } = req.body;
+
+    const skip = (page - 1) * limit;
+
+    const data = await Cart.aggregate([
+        {
+            $match: {
+                buyerId: req.loggedInUserId,
+            },
+        },
+        {
+            $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productData",
+            },
+        },
+        {
+            $project: {
+                productId: 1,
+                orderedQuantity: 1,
+                productDetails: {
+                    name: { $first: ["$productData.name"] },
+                    brand: { $first: "$productData.brand" },
+                    category: { $first: "$productData.category" },
+                    totalQuantity: { $first: "$productData.quantity" },
+                    image: { $first: "$productData.image" },
+                    freeShipping: { $first: "$productData.freeShipping" },
+                    price: { $first: "$productData.price" },
+                },
+            },
+        },
+        // { $skip: skip },
+        // { $limit: limit },
+    ]);
+
+    return res.status(200).send({ message: "success", cartData: data });
+};
+
+// ! get item count helper
+export const getItemCount = async (req, res) => {
+    const cartItemCount = await Cart.find({ buyerId: req.loggedInUserId });
 };
 
 // ! flush cart helper

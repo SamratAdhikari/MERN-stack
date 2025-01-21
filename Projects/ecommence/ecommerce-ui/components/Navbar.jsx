@@ -1,6 +1,8 @@
 "use client";
 import MenuIcon from "@mui/icons-material/Menu";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AppBar from "@mui/material/AppBar";
+import Badge from "@mui/material/Badge"; // Importing Badge
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,12 +15,24 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import LogoutIcon from "@mui/icons-material/Logout";
 import * as React from "react";
 
 const appName = "Nepal Mart";
 const drawerWidth = 240;
-const navItems = ["Home", "Products", "Cart"];
+const navItems = [
+    {
+        id: 1,
+        name: "Cart",
+        path: "/cart/",
+        icon: (
+            <Badge badgeContent={4} color="error">
+                <AddShoppingCartIcon />
+            </Badge>
+        ),
+    },
+];
 
 const Navbar = (props) => {
     const { window } = props;
@@ -28,12 +42,12 @@ const Navbar = (props) => {
         setMobileOpen((prevState) => !prevState);
     };
 
-    //   handle logout
     const handleLogout = () => {
         localStorage.clear();
-
         redirect("/login");
     };
+
+    const router = useRouter();
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -43,15 +57,25 @@ const Navbar = (props) => {
             <Divider />
             <List>
                 {navItems.map((item) => (
-                    <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: "center" }}>
-                            <ListItemText primary={item} />
+                    <ListItem key={item.id} disablePadding>
+                        <ListItemButton
+                            sx={{ textAlign: "center" }}
+                            onClick={() => router.push(item.path)}
+                        >
+                            <ListItemText primary={item.name} />
+                            {item.icon}
                         </ListItemButton>
                     </ListItem>
                 ))}
-                <Button variant="contained" onClick={handleLogout}>
-                    logout
-                </Button>
+                <ListItem disablePadding className="text-red-700">
+                    <ListItemButton
+                        sx={{ textAlign: "center" }}
+                        onClick={handleLogout}
+                    >
+                        <ListItemText primary="Logout" />
+                        <LogoutIcon />
+                    </ListItemButton>
+                </ListItem>
             </List>
         </Box>
     );
@@ -63,7 +87,7 @@ const Navbar = (props) => {
         <Box sx={{ display: "flex", mb: "5rem" }}>
             <CssBaseline />
             <AppBar component="nav">
-                <Toolbar className="bg-red-600 ">
+                <Toolbar className="bg-purple-800">
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -80,21 +104,28 @@ const Navbar = (props) => {
                             flexGrow: 1,
                             display: { xs: "none", sm: "block" },
                         }}
+                        className="hover:cursor-pointer"
+                        onClick={() => router.push("/")}
                     >
                         {appName}
                     </Typography>
                     <Box sx={{ display: { xs: "none", sm: "block" } }}>
                         {navItems.map((item) => (
-                            <Button key={item} sx={{ color: "#fff" }}>
-                                {item}
+                            <Button
+                                key={item.id}
+                                sx={{ color: "#fff" }}
+                                className="hover:cursor-pointer"
+                                onClick={() => router.push(item.path)}
+                            >
+                                {item.icon}
                             </Button>
                         ))}
                         <Button
                             disableRipple
-                            sx={{ color: "#fff" }}
+                            sx={{ color: "#c73636", fontWeight: "bold" }}
                             onClick={handleLogout}
                         >
-                            logout
+                            <LogoutIcon />
                         </Button>
                     </Box>
                 </Toolbar>
@@ -106,7 +137,7 @@ const Navbar = (props) => {
                     open={mobileOpen}
                     onClose={handleDrawerToggle}
                     ModalProps={{
-                        keepMounted: true, // Better open performance on mobile.
+                        keepMounted: true,
                     }}
                     sx={{
                         display: { xs: "block", sm: "none" },

@@ -1,0 +1,15 @@
+export const courseCategories = [
+    "MERN stack",
+    "DevOps",
+    "Data Science with Python",
+    "Machine Learning with Python",
+    "Q&A",
+    "Cloud Computing",
+    "Cybersecurity",
+    "Mobile App Development with Flutter",
+    "Blockchain Technology",
+    "UI/UX Design",
+    "Internet of Things (IoT)",
+    "Game Development with Unity",
+    "Big Data Analytics with PowerBI",
+];
