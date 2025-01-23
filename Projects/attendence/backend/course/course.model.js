@@ -24,11 +24,6 @@ const courseSchema = new mongoose.Schema(
             required: true,
             min: 0,
         },
-        salary: {
-            type: Number,
-            required: true,
-            min: 0,
-        },
         students: [
             {
                 type: mongoose.Schema.Types.ObjectId,
@@ -38,6 +33,10 @@ const courseSchema = new mongoose.Schema(
         teacher: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
+            required: true,
+        },
+        duration: {
+            type: String,
             required: true,
         },
     },

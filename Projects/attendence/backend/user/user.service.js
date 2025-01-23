@@ -1,5 +1,6 @@
 import User from "./user.model.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // ! get users helper
 export const showUsers = async (req, res) => {
@@ -19,7 +20,6 @@ export const registerUser = async (req, res) => {
 
     // find user using email
     const user = await User.findOne({ email: newUser.email });
-    console.log(newUser);
 
     // if user exists, throw error
     if (user) {
@@ -30,7 +30,7 @@ export const registerUser = async (req, res) => {
 
     // hash password
     const plainPwd = newUser.password;
-    const saltRounds = process.env.SALT;
+    const saltRounds = 10;
     const hashedPwd = await bcrypt.hash(plainPwd, saltRounds);
 
     newUser.password = hashedPwd;
@@ -72,7 +72,7 @@ export const loginUser = async (req, res) => {
     // generate access token
     const payload = { email: user.email };
     const privateKey = process.env.ACCESS_TOKEN_SECRET_KEY;
-    const token = JsonWebTokenError.sign(payload, privateKey, {
+    const token = jwt.sign(payload, privateKey, {
         expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
     });
 

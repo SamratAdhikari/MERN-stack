@@ -1,27 +1,24 @@
 import express from "express";
-import validateReqBody from "../middleware/validate.req.body";
 import {
     loginUserValidationSchema,
     registerUserValidationSchema,
-} from "./user.validation";
+} from "./user.validation.js";
+import validateReqBody from "../middleware/validate.req.body.js";
+import { loginUser, registerUser, showUsers } from "./user.service.js";
 
 const router = express.Router();
 
 // *GET: show all users
-router.get("/user/show", showUsers);
+router.get("/show", showUsers);
 
 // *POST: register user
 router.post(
-    "/user/register",
+    "/register",
     validateReqBody(registerUserValidationSchema),
     registerUser
 );
 
 // *POST: login user
-router.post(
-    "/user/login",
-    validateReqBody(loginUserValidationSchema),
-    loginUser
-);
+router.post("/login", validateReqBody(loginUserValidationSchema), loginUser);
 
 export default router;

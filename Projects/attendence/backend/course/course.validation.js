@@ -3,6 +3,10 @@ import { courseCategories } from "../constants/general.constants";
 
 export const courseValidationSchema = Yup.object({
     name: Yup.string().required("Course name is required").min(3).max(100),
+    image: Yup.string()
+        .url("Image must be a valid URL")
+        .default("https://picsum.photos/id/180/300/200")
+        .required("Image is required"),
     description: Yup.string()
         .required("Description is required")
         .min(10)
@@ -13,7 +17,5 @@ export const courseValidationSchema = Yup.object({
     price: Yup.number()
         .required("Price is required for students")
         .min(0, "Price cannot be negative"),
-    salary: Yup.number()
-        .required("Salary is required for teacher")
-        .min(0, "Salary cannot be negative"),
+    duration: Yup.string().required("Duration is required."),
 });
